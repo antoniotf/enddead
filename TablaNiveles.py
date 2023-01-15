@@ -4,17 +4,17 @@
 niveles =[]
 
 level_0 = [
+"XXXXX X   X XXXX"
+"  X   X   X X   "
+"  X   XXXXX XXX "
+"  X   X   X X   "
+"  X   X   X XXXX"
 "                "
-"                "
-"XXX XX   X   X  "
-"X X X X  XX XX  "
-"XXX X  X X X X  "   
-"X X X X  X   X  "
-"X X XX   X   X  "
-"                "
-"                "
-"                "
-"                "
+"XXXX X   X XXX  "
+"X    XX  X X  X "
+"XXX  X X X X  X "
+"X    X  XX X  X "
+"XXXX X   X XXX  "
 ]
 
 level_1 = [
