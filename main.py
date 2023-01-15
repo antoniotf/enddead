@@ -1,3 +1,4 @@
+import keyboard
 import turtle
 import copy
 import time
@@ -121,10 +122,10 @@ def MuevePersonajeA(X_varia, Y_varia):
     estadoCasillaDestino =""
     estadoCasillaDestino = gridJuego[nueva_Y][nueva_X] # invertido Y / X
     if estadoCasillaDestino == 'E':
-        print('\a')
-        print("RESUELTO!!!!!!!!!")
+        gridJuego[nueva_Y][nueva_X]='*'#cambia la marca 'E'exit por * en el gridJuego
         rotulo_nivel_completado(contadorMovimientos)
     if estadoCasillaDestino ==' ':
+        playsound('sprites/pasosonido.wav', block=False)
         ponPersonaje.goto((nueva_X * 50) - 400, (290 - (nueva_Y * 50)))
         gridJuego[coordenada_Y_actual][coordenada_X_actual] = " " #actualiza el estado de la casilla en el grid
         contadorMovimientos = contadorMovimientos + 1
@@ -134,6 +135,7 @@ def MuevePersonajeA(X_varia, Y_varia):
         detrasDeCajaHay = gridJuego[nueva_Y + Y_varia][nueva_X + X_varia]
         if detrasDeCajaHay ==' ':
             #está libre así que desplazamos la caja.
+            playsound('sprites/deslizacajasound.wav', block=False)
             imprime((nueva_X + X_varia), (nueva_Y + Y_varia),'@')
             x_caja_movida = nueva_X + X_varia
             y_caja_movida = nueva_Y + Y_varia
@@ -159,12 +161,25 @@ def rotulo_nivel_completado(x):
     lapiz.goto(0,100)
     lapiz.color("blue")
     lapiz.shape("square")
-    lapiz.shapesize(stretch_wid=7, stretch_len=18)
+    lapiz.shapesize(stretch_wid=12, stretch_len=18)
     lapiz.stamp()
-    lapiz.goto(-100, 50)
+    lapiz.goto(-100, 0)
     lapiz.color('#3c79b8')
     nivelActual = nivelActual + 1
-    lapiz.write("NIVEL COMPLETADO\n\nMOVIMIENTOS {}\nPRÓXIMO NIVEL {}".format(x, nivelActual),False,"left",("Courier", 18, "bold"))
+    lapiz.write("NIVEL COMPLETADO\n\nMOVIMIENTOS {}\nPRÓXIMO NIVEL {}\n\n\n'press spacebar'".format(x, nivelActual),False,"left",("Courier", 18, "bold"))
+    wn.update()
+    keyboard.wait(' ')
+    if nivelActual > nivelMaximo:
+        juegoCompletado()
+    else:
+        cargar_pantalla(niveles[nivelActual])
+def juegoCompletado():
+    playsound('sprites/melodiaFinJuego.mp3', block=False)
+    cargar_pantalla(niveles[0])
+    while True: #TODO OPCIÓN DE CERRAR JUEGO UNA VEZ FINALIZADOS TODOS LOS NIVELES.
+        wn.update()
+        pass
+
 
 
 
@@ -188,7 +203,7 @@ niveles.append(level_1)
 niveles.append(level_2)
 niveles.append(level_3)
 niveles.append(level_4)
-nivelActual = 1#nivel de inicio
+nivelActual = 4#nivel de inicio
 nivelMaximo = 4
 
 configurar_ventana() # Configura color, y tamaño de ventan.
