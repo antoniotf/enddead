@@ -203,7 +203,7 @@ niveles.append(level_1)
 niveles.append(level_2)
 niveles.append(level_3)
 niveles.append(level_4)
-nivelActual = 4#nivel de inicio
+nivelActual = 1#nivel de inicio
 nivelMaximo = 4
 
 configurar_ventana() # Configura color, y tamaño de ventan.
