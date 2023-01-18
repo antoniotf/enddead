@@ -225,7 +225,7 @@ ponPersonaje = PonPersonaje()
 
 
 
-nivelActual = 11#nivel de inicio
+nivelActual = 1#nivel de inicio
 nivelMaximo = 20
 
 configurar_ventana() # Configura color, y tamaño de ventana.
