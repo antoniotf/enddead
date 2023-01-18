@@ -28,6 +28,7 @@ def configurar_ventana():
     wn.addshape('sprites/caja.gif')
     wn.addshape('sprites/exit.gif')
     wn.addshape('sprites/personaje.gif')
+    wn.addshape('sprites/personajeEsforzado.gif')
     #ponPersonaje = PonPersonaje()
 
 
@@ -95,8 +96,10 @@ def imprime(x,y,tipo):#
     y_screen = 290 - (y * 50)
     if tipo == "X":
         lapiz.shape('sprites/ladrillo.gif')
-    elif tipo == "@":
+    elif (tipo == "@"):
         lapiz.shape('sprites/caja.gif')
+    elif (tipo == "R"):
+        lapiz.shape('sprites/cajaRoja.gif')
     elif tipo == "E":
         lapiz.shape('sprites/exit.gif')
     elif tipo == "P":
@@ -112,9 +115,11 @@ def imprime(x,y,tipo):#
         idStamps[y][x] = lapiz.stamp()
 
 def MuevePersonajeA(X_varia, Y_varia):
+    global tiempoUltimoMovimiento
     global contadorMovimientos
     global gridJuego
     ponPersonaje.penup()
+    ponPersonaje.shape('sprites/personaje.gif')
     coordenada_X_actual =int((ponPersonaje.xcor()+400)/50)
     coordenada_Y_actual =int((290 - ponPersonaje.ycor())/50)
     nueva_X =coordenada_X_actual + X_varia
@@ -130,6 +135,7 @@ def MuevePersonajeA(X_varia, Y_varia):
         gridJuego[coordenada_Y_actual][coordenada_X_actual] = " " #actualiza el estado de la casilla en el grid
         contadorMovimientos = contadorMovimientos + 1
         imprime_marcador_movimientos(contadorMovimientos)
+        tiempoUltimoMovimiento = time.monotonic()
     if estadoCasillaDestino == '@':
         #si empuja una caja, ver que hay detras.
         detrasDeCajaHay = gridJuego[nueva_Y + Y_varia][nueva_X + X_varia]
@@ -145,6 +151,24 @@ def MuevePersonajeA(X_varia, Y_varia):
             lapiz.clearstamp(identificador)
             gridJuego[nueva_Y][nueva_X] = " "  # actualiza el estado de la casilla en el grid
 
+    if estadoCasillaDestino == 'R': # Las cajas rojas solo se mueven con impulso del personaje desde dos casillas.
+        #si empuja una caja, ver que hay detras.
+        detrasDeCajaHay = gridJuego[nueva_Y + Y_varia][nueva_X + X_varia]
+        if detrasDeCajaHay ==' ':
+            #está libre así que vemos cuanto tiempo a pasado del último movimiento para determinar se viene con "carrerilla".
+            if ( time.monotonic() - tiempoUltimoMovimiento) < 0.5:
+                #comprobar si no ha cambiado de dirección (para determinar si está empujado desde dos casillas en linea recta)
+                playsound('sprites/deslizacajasound.wav', block=False)
+                imprime((nueva_X + X_varia), (nueva_Y + Y_varia),'R')
+                x_caja_movida = nueva_X + X_varia
+                y_caja_movida = nueva_Y + Y_varia
+                gridJuego[y_caja_movida][x_caja_movida] = "R"  # actualiza el estado de la casilla en el grid
+                #borrar caja movida
+                identificador = idStamps[nueva_Y][nueva_X]
+                lapiz.clearstamp(identificador)
+                gridJuego[nueva_Y][nueva_X] = " "  # actualiza el estado de la casilla en el grid
+            else:
+                ponPersonaje.shape('sprites/personajeEsforzado.gif')
 
 def imprime_marcador_movimientos(x):
     cuentaMovimientos.penup()
@@ -193,21 +217,16 @@ altoPantalla = 700  # medida de la ventana se requiere numero par
 wn.setup(anchoPantalla, altoPantalla)
 wn.addshape('sprites/ladrillo.gif')
 wn.addshape('sprites/caja.gif')
+wn.addshape('sprites/cajaRoja.gif')
 wn.addshape('sprites/exit.gif')
 wn.addshape('sprites/personaje.gif')
+wn.addshape('sprites/personajeEsforzado.gif')
 ponPersonaje = PonPersonaje()
 
 
-niveles.append(level_0)
-niveles.append(level_1)
-niveles.append(level_2)
-niveles.append(level_3)
-niveles.append(level_4)
-niveles.append(level_5)
-niveles.append(level_6)
-niveles.append(level_7)
-nivelActual = 1#nivel de inicio
-nivelMaximo = 7
+
+nivelActual = 11#nivel de inicio
+nivelMaximo = 20
 
 configurar_ventana() # Configura color, y tamaño de ventana.
 
