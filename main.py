@@ -168,6 +168,7 @@ def MuevePersonajeA(X_varia, Y_varia):
                 lapiz.clearstamp(identificador)
                 gridJuego[nueva_Y][nueva_X] = " "  # actualiza el estado de la casilla en el grid
             else:
+                playsound('sprites/sonidoEsfuerzo.wav',block=False)
                 ponPersonaje.shape('sprites/personajeEsforzado.gif')
 
 def imprime_marcador_movimientos(x):
