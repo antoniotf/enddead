@@ -203,10 +203,13 @@ niveles.append(level_1)
 niveles.append(level_2)
 niveles.append(level_3)
 niveles.append(level_4)
-nivelActual = 4#nivel de inicio
-nivelMaximo = 4
+niveles.append(level_5)
+niveles.append(level_6)
+niveles.append(level_7)
+nivelActual = 1#nivel de inicio
+nivelMaximo = 7
 
-configurar_ventana() # Configura color, y tamaño de ventan.
+configurar_ventana() # Configura color, y tamaño de ventana.
 
 lapiz = turtle.Turtle()
 lapiz.hideturtle()
@@ -255,7 +258,7 @@ while True:
         a=0
         b=b+1
         print("candidad de partidas = ", b)
-        cargar_pantalla(niveles[0]) """
+        cargar_pantalla(niveles[0])"""
 
     wn.update()
 

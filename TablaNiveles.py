@@ -46,44 +46,73 @@ level_2 = [
 ]
 
 level_3 = [
-"XXXXXXXXXXXXXX  "
-"X   @@     @ X  "
-"X      @@ @ @X  "
-"X   @@ @ @ @ X  "
-"X  @@  @@@@@ X  "
-"XP @ @ @     X  "
-"X   @ @  @  @X  "
-"X    @ @ @@@@X  "
-"X   @@  @@@E X  "
-"X   @@  @    X  "
-"XXXXXXXXXXXXXX  "
+" XXXXXXXXXXXXXX "
+" X   @@     @ X "
+" X      @@ @ @X "
+" X   @@ @ @ @ X "
+" X  @@  @@@@@ X "
+" XP @ @ @     X "
+" X   @ @  @  @X "
+" X    @ @ @@@@X "
+" X   @@  @@@E X "
+" X   @@  @    X "
+" XXXXXXXXXXXXXX "
 ]
 
 level_4 = [
-"       XXXX     "
-"    X X    X    "
-" XXX XX@@ @ X   "
-"X XX X  @   X   "
-"X   @@   @ @X   "
-"X@ @ @   @@ X   "
-"X XX X @@ @@X   "
-" XXXPXX @  EX   "
-"    X X@   X    "
-"     X XXXX     "
+"         XXXX   "
+"      X X    X  "
+"   XXX XX@@ @ X "
+"  X XX X  @   X "
+"  X   @@   @ @X "
+"  X@ @ @   @@ X "
+"  X XX X @@ @@X "
+"   XXXPXX @  EX "
+"      X X@   X  "
+"       X XXXX   "
 "                "
 ]
 
+level_5 = [
+"        X       "
+"       XEX      "
+"      X   X     "
+"     X @@@ X    "
+"    X       X   "
+"   X @@@@@@@ X  "
+"    X  @ @  X   "
+"     X  @  X    "
+"      X   X     "
+"       XPX      "
+"        X       "
+]
 
+level_6 = [
+"  XXXXXXXXXXXX  "
+"  X       @  X  "
+"  X@  @  @   X  "
+"  X @@@@@ @@@X  "
+"  X @  @ @@ PX  "
+"  X @  @ @  @X  "
+"  XE @   X@  X  "
+"  XXXXXXXXXXXX  "
+"                "
+"                "
+"                "
+]
 
-level_1original = [
-"      XXX       "
-"   XXXXEXXXX    "
-" XXX @ @   XXX  "
-"XX P  @@@ @  XX "
-"X@ @ @ @   @ @X "
-"X@  @ @@@@@  @X "
-"X@@@ @  @  @@@X "
-"XXXXXXXXXXXXXXX "
+level_7 = [
+"   X X X X X X  "
+"  X X X X X X X "
+" X P@ @ @ @ @@ X"
+"  X  @         X"
+" X @@@@@@@@@@@XX"
+"X   @  @       X"
+" X X  @ @ @ @@XX"
+"  X @  @@ @ @  X"
+" X  @ @ @ @ @ @X"
+"  X EX X X X XX "
+"   X  X X X X   "
 ]
 
 
