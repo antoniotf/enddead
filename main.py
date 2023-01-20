@@ -223,10 +223,10 @@ wn.addshape('sprites/exit.gif')
 wn.addshape('sprites/personaje.gif')
 wn.addshape('sprites/personajeEsforzado.gif')
 ponPersonaje = PonPersonaje()
+tiempoUltimoMovimiento = 0
 
 
-
-nivelActual = 1#nivel de inicio
+nivelActual = 11#nivel de inicio
 nivelMaximo = 20
 
 configurar_ventana() # Configura color, y tamaño de ventana.
@@ -278,7 +278,7 @@ while True:
         a=0
         b=b+1
         print("candidad de partidas = ", b)
-        cargar_pantalla(niveles[0])"""
+        cargar_pantalla(niveles[1])"""
 
     wn.update()
 
