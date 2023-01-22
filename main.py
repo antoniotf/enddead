@@ -118,6 +118,7 @@ def MuevePersonajeA(X_varia, Y_varia):
     global tiempoUltimoMovimiento
     global contadorMovimientos
     global gridJuego
+    global xMasyAnteriores
     ponPersonaje.penup()
     ponPersonaje.shape('sprites/personaje.gif')
     coordenada_X_actual =int((ponPersonaje.xcor()+400)/50)
@@ -136,6 +137,7 @@ def MuevePersonajeA(X_varia, Y_varia):
         contadorMovimientos = contadorMovimientos + 1
         imprime_marcador_movimientos(contadorMovimientos)
         tiempoUltimoMovimiento = time.monotonic()
+        xMasyAnteriores = str(X_varia) + str(Y_varia)
     if estadoCasillaDestino == '@':
         #si empuja una caja, ver que hay detras.
         detrasDeCajaHay = gridJuego[nueva_Y + Y_varia][nueva_X + X_varia]
@@ -156,7 +158,7 @@ def MuevePersonajeA(X_varia, Y_varia):
         detrasDeCajaHay = gridJuego[nueva_Y + Y_varia][nueva_X + X_varia]
         if detrasDeCajaHay ==' ':
             #está libre así que vemos cuanto tiempo a pasado del último movimiento para determinar se viene con "carrerilla".
-            if ( time.monotonic() - tiempoUltimoMovimiento) < 0.5:
+            if (( time.monotonic() - tiempoUltimoMovimiento) < 0.5) and (xMasyAnteriores == (str(X_varia) + str(Y_varia))):
                 #comprobar si no ha cambiado de dirección (para determinar si está empujado desde dos casillas en linea recta)
                 playsound('sprites/deslizacajasound.wav', block=False)
                 imprime((nueva_X + X_varia), (nueva_Y + Y_varia),'R')
@@ -191,10 +193,17 @@ def rotulo_nivel_completado(x):
     lapiz.goto(-100, 0)
     lapiz.color('#3c79b8')
     nivelActual = nivelActual + 1
-    lapiz.write("NIVEL COMPLETADO\n\nMOVIMIENTOS {}\nPRÓXIMO NIVEL {}\n\n\n'press spacebar'".format(x, nivelActual),False,"left",("Courier", 18, "bold"))
-    wn.update()
-    keyboard.wait(' ')
+
+    if nivelActual <= nivelMaximo:
+        lapiz.write("NIVEL COMPLETADO\n\nMOVIMIENTOS {}\nPRÓXIMO NIVEL {}\n\n\n'press spacebar'".format(x, nivelActual),False,"left",("Courier", 18, "bold"))
+        wn.update()
+        keyboard.wait(' ')
+
     if nivelActual > nivelMaximo:
+        lapiz.write("JUEGO FINALIZADO\n\nMOVIMIENTOS {}\nPRÓXIMO NIVEL, DIOS!\n\n\n'press spacebar'".format(x),
+                    False, "left", ("Courier", 18, "bold"))
+        wn.update()
+        keyboard.wait(' ')
         juegoCompletado()
     else:
         cargar_pantalla(niveles[nivelActual])
@@ -203,7 +212,28 @@ def juegoCompletado():
     cargar_pantalla(niveles[0])
     while True: #TODO OPCIÓN DE CERRAR JUEGO UNA VEZ FINALIZADOS TODOS LOS NIVELES.
         wn.update()
-        pass
+        ponPersonaje.penup()
+        ponPersonaje.showturtle()
+        ponPersonaje.goto(0, 240)
+        wn.update()
+        time.sleep(0.1)
+        ponPersonaje.goto (0, 250)
+        wn.update()
+        time.sleep(0.1)
+        ponPersonaje.goto(0, 260)
+        wn.update()
+        time.sleep(0.1)
+        ponPersonaje.goto(0, 270)
+        wn.update()
+        time.sleep(0.3)
+        ponPersonaje.goto(0, 260)
+        wn.update()
+        time.sleep(0.1)
+        ponPersonaje.goto(0, 250)
+        wn.update()
+        time.sleep(0.1)
+
+
 
 
 
@@ -224,10 +254,10 @@ wn.addshape('sprites/personaje.gif')
 wn.addshape('sprites/personajeEsforzado.gif')
 ponPersonaje = PonPersonaje()
 tiempoUltimoMovimiento = 0
+xMasyAnteriores =""
 
-
-nivelActual = 11#nivel de inicio
-nivelMaximo = 20
+nivelActual = 7#nivel de inicio
+nivelMaximo = 7
 
 configurar_ventana() # Configura color, y tamaño de ventana.
 
