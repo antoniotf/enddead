@@ -6,19 +6,16 @@ class Score:
         fichero = open('score.txt', 'r')
         readthefile = fichero.readlines()
         self.lista = sorted(readthefile, reverse=True)
+        print("lista ordenada:")
+        print(self.lista)
 
-
-
-    def cargarLista(self):
-        pass
-
-
-
-
+    def puesto(self,puesto):
+        return (self.lista[puesto].split(','))
 
 
 
 
+'''
 
 nombres =['PACO', 'PEDRO', 'JOSE', 'MARIA', 'JESUS', 'ANTONIO','RICARDO']
 puntos = [1322, 23, 345,32,221,9,13]
@@ -32,7 +29,7 @@ for nombre in nombres:
     i=i+1
     fichero.writelines(str(punto)+','+nombre+','+str(nivel)+','+'\n')
 fichero.close()
-
+'''
 
 
 

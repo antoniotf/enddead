@@ -12,6 +12,7 @@ class PonPersonaje(turtle.Turtle):
         turtle.Turtle.__init__(self)
         self.shape('sprites/personaje.gif')
         #self.color('blue')
+        self.hideturtle()
         self.penup()
         self.speed(0)
 
@@ -31,19 +32,51 @@ def configurar_ventana():
     wn.addshape('sprites/personajeEsforzado.gif')
     #ponPersonaje = PonPersonaje()
 
-
+def pantalla_inicio():
+    #Pantalla de presentacion de titulo y score list.
+    wn.bgpic('sprites/presentacion.gif')
+    lapiz.speed(99)
+    lapiz.color('#00ff00')
+    lapiz.goto(-100,50)
+    lapiz.write("TOP 5 PLAYERS",
+                False, "left", ("Courier", 18, "bold"))
+    lapiz.goto(-170, 0)
+    lapiz.write("SCORE" +"\t" +"NAME" + "\t" + "     LEVEL",
+                False, "left", ("Courier", 18, "bold"))
+    lapiz.color('#00f300')
+    lapiz.goto(-170, -330)
+    lapiz.write('< press spacebar to start >',
+                False, "left", ("Courier", 14, "bold"))
+    miScore = Score()
+    lapiz.color("white")
+    x= -170
+    y= -50
+    for i in range (1,6):
+        lapiz.goto( x-70, (y * i) )
+        lapiz.write(i , False, "left", ("Courier", 18, "bold"))
+        lapiz.goto(x+70,(y * i))
+        lapiz.write(str(int(miScore.puesto(i)[0])),False, "right", ("Courier", 18, "bold"))
+        lapiz.goto(x + 100, (y * i))
+        lapiz.write(miScore.puesto(i)[1], False, "left", ("Courier", 18, "bold"))
+        lapiz.goto(x + 350, (y * i))
+        lapiz.write(miScore.puesto(i)[2], False, "right", ("Courier", 18, "bold"))
+    lapiz.speed(0)
+    wn.update()
+    keyboard.wait(' ')
+    wn.update()
 
 def cargar_pantalla(level):
     global contadorMovimientos
     global lapiz
     global idStamps
     global gridJuego
+    wn.bgcolor('black')
+    wn.bgpic('nopic')
     wn.reset()
     lapiz.hideturtle()
     lapiz.penup()
     cuentaMovimientos.hideturtle()
     cuentaMovimientos.penup()
-    ponPersonaje.hideturtle()
     ponPersonaje.penup
     contadorMovimientos = 0
     lapiz.hideturtle()
@@ -83,10 +116,6 @@ def cargar_pantalla(level):
     lapiz.color("green")
     lapiz.pensize(5)
     lapiz.goto(350, -260)
-
-
-
-
 
 def imprime(x,y,tipo):#
     global lapiz
@@ -234,11 +263,6 @@ def juegoCompletado():
         time.sleep(0.1)
 
 
-
-
-
-
-
 # -------------------------------------------------- C O O D I G O --------------------------------------------------------------
 wn = turtle.Screen()
 wn.bgcolor('black')
@@ -259,11 +283,15 @@ xMasyAnteriores =""
 nivelActual = 1#nivel de inicio
 nivelMaximo = 20
 
-configurar_ventana() # Configura color, y tamaño de ventana.
-
 lapiz = turtle.Turtle()
 lapiz.hideturtle()
 lapiz.penup()
+
+
+
+configurar_ventana() # Configura color, y tamaño de ventana.
+
+pantalla_inicio() # pantalla de presentación con titulo y scorelist (espera 'press spacebar' para seguir).
 
 cuentaMovimientos = turtle.Turtle()
 cuentaMovimientos.hideturtle()
@@ -272,15 +300,8 @@ cuentaMovimientos.penup()
 cargar_pantalla(niveles[nivelActual])# Muestra la pantalla del nivel (0 el mas bajo)
 
 
-miScore=Score()
 
-#print(miScore.sortedData)
-print(miScore.lista)
-temporal =str("")
-temporal = miScore.lista[3]
-print("temporal= ", temporal.split(sep=','))
 #Eventos de teclado.
-
 wn.listen()
 wn.onkey(lambda: MuevePersonajeA(0, -1), "Up")
 wn.onkey(lambda: MuevePersonajeA(0, 1), "Down")
