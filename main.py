@@ -33,6 +33,8 @@ def configurar_ventana():
     #ponPersonaje = PonPersonaje()
 
 def pantalla_inicio():
+    global movimientosTotalPartida
+    movimientosTotalPartida = 0
     #Pantalla de presentacion de titulo y score list.
     wn.bgpic('sprites/presentacion.gif')
     lapiz.speed(99)
@@ -47,7 +49,6 @@ def pantalla_inicio():
     lapiz.goto(-170, -330)
     lapiz.write('< press spacebar to start >',
                 False, "left", ("Courier", 14, "bold"))
-    miScore = Score()
     lapiz.color("white")
     x= -170
     y= -50
@@ -145,6 +146,7 @@ def imprime(x,y,tipo):#
         idStamps[y][x] = lapiz.stamp()
 
 def MuevePersonajeA(X_varia, Y_varia):
+    global movimientosTotalPartida
     global tiempoUltimoMovimiento
     global contadorMovimientos
     global gridJuego
@@ -159,6 +161,7 @@ def MuevePersonajeA(X_varia, Y_varia):
     estadoCasillaDestino = gridJuego[nueva_Y][nueva_X] # invertido Y / X
     if estadoCasillaDestino == 'E':
         gridJuego[nueva_Y][nueva_X]='*'#cambia la marca 'E'exit por * en el gridJuego
+        movimientosTotalPartida = movimientosTotalPartida + contadorMovimientos
         rotulo_nivel_completado(contadorMovimientos)
     if estadoCasillaDestino ==' ':
         playsound('sprites/pasosonido.wav', block=False)
@@ -263,6 +266,23 @@ def juegoCompletado():
         wn.update()
         time.sleep(0.1)
 
+def salirDePartida(totalMovimientos, nivel):
+    #Comprobar si la puntuación se mayor que el top 5.
+    global contadorMovimientos
+    puntos = 2000 - (totalMovimientos) -((20-nivel+1)*100)
+    #Comprobar si entra en el TOP 5 del high score
+    if puntos > int(miScore.puesto(5)[0]):
+        print("entra en la tabla de records con puntos =", puntos)
+    else:
+        print("no entra en la table con puntos = ", puntos)
+    print("nivel = ", nivel)
+    print("total movimientos=",totalMovimientos)
+    print("puntos= ", puntos)
+
+    while True:
+        wn.update()
+        wn.tracer(0)
+        pass
 
 # -------------------------------------------------- C O O D I G O --------------------------------------------------------------
 wn = turtle.Screen()
@@ -278,8 +298,10 @@ wn.addshape('sprites/exit.gif')
 wn.addshape('sprites/personaje.gif')
 wn.addshape('sprites/personajeEsforzado.gif')
 ponPersonaje = PonPersonaje()
+miScore = Score()
 tiempoUltimoMovimiento = 0
 xMasyAnteriores =""
+movimientosTotalPartida = 0
 
 nivelActual = 1#nivel de inicio
 nivelMaximo = 20
@@ -310,10 +332,9 @@ wn.onkey(lambda: MuevePersonajeA(1, 0), "Right")
 wn.onkey(lambda: MuevePersonajeA(-1, 0), "Left")
 wn.onkey(lambda: cargar_pantalla(niveles[nivelActual]),"r")
 wn.onkey(lambda: cargar_pantalla(niveles[nivelActual]),"R")
+wn.onkey(lambda: salirDePartida(movimientosTotalPartida, nivelActual),"S")
+wn.onkey(lambda: salirDePartida(movimientosTotalPartida, nivelActual),"s")
 wn.tracer(0)
-
-
-
 
 a=0
 b=0
