@@ -5,7 +5,7 @@ import time
 import random
 from playsound import playsound
 from TablaNiveles import *
-
+from ScoreList import *
 
 class PonPersonaje(turtle.Turtle):
     def __init__(self):
@@ -256,8 +256,8 @@ ponPersonaje = PonPersonaje()
 tiempoUltimoMovimiento = 0
 xMasyAnteriores =""
 
-nivelActual = 7#nivel de inicio
-nivelMaximo = 7
+nivelActual = 1#nivel de inicio
+nivelMaximo = 20
 
 configurar_ventana() # Configura color, y tamaño de ventana.
 
@@ -272,10 +272,13 @@ cuentaMovimientos.penup()
 cargar_pantalla(niveles[nivelActual])# Muestra la pantalla del nivel (0 el mas bajo)
 
 
+miScore=Score()
 
-
-
-
+#print(miScore.sortedData)
+print(miScore.lista)
+temporal =str("")
+temporal = miScore.lista[3]
+print("temporal= ", temporal.split(sep=','))
 #Eventos de teclado.
 
 wn.listen()
