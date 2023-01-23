@@ -62,6 +62,7 @@ def pantalla_inicio():
         lapiz.write(miScore.puesto(i)[2], False, "right", ("Courier", 18, "bold"))
     lapiz.speed(0)
     wn.update()
+    wn.tracer(0)
     keyboard.wait(' ')
     wn.update()
 
