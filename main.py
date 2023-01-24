@@ -273,16 +273,53 @@ def salirDePartida(totalMovimientos, nivel):
     #Comprobar si entra en el TOP 5 del high score
     if puntos > int(miScore.puesto(5)[0]):
         print("entra en la tabla de records con puntos =", puntos)
+        registro_de_score(puntos)
     else:
         print("no entra en la table con puntos = ", puntos)
     print("nivel = ", nivel)
     print("total movimientos=",totalMovimientos)
     print("puntos= ", puntos)
+    wn.update()
+    wn.tracer(0)
+    pantalla_inicio()
 
+def registro_de_score(puntos):
+    wn.bgcolor('black')
+    wn.bgpic('nopic')
+    wn.reset()
+    lapiz.hideturtle()
+    lapiz.penup()
+    lapiz.speed(99)
+    lapiz.color('#00ff00')
+    y = 300
+    x = -200
+    lapiz.goto(x-50 , y)
+    lapiz.write("BIENVENIDO A LA FAMA !!!!!!",
+                False, "left", ("Courier", 28, "bold"))
+    lapiz.goto(x, y- 100)
+    lapiz.write("A B C D E F G H I J",
+                False, "left", ("Courier", 28, "bold"))
+    lapiz.goto(x, y - 150)
+    lapiz.write("K L M N Ñ O P Q R S",
+                False, "left", ("Courier", 28, "bold"))
+    lapiz.goto(x, y -200)
+    lapiz.write("T U V W X Y Z .",
+                False, "left", ("Courier", 28, "bold"))
+    lapiz.goto(x +350, y - 190)
+    lapiz.write("_",
+                False, "left", ("Courier", 28, "bold"))
+    lapiz.goto(x + 380, y -190 )
+    lapiz.write("   Del   End",
+                False, "left", ("Courier", 8, "bold"))
+    lapiz.goto(-100, 0)
+    lapiz.write("puntos totales ={}".format(puntos),
+                False, "left", ("Courier", 18, "bold"))
     while True:
         wn.update()
         wn.tracer(0)
         pass
+
+
 
 # -------------------------------------------------- C O O D I G O --------------------------------------------------------------
 wn = turtle.Screen()
