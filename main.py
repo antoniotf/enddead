@@ -30,6 +30,7 @@ def configurar_ventana():
     wn.addshape('sprites/exit.gif')
     wn.addshape('sprites/personaje.gif')
     wn.addshape('sprites/personajeEsforzado.gif')
+    wn.addshape('sprites/CursorDiana.gif')
     #ponPersonaje = PonPersonaje()
 
 def pantalla_inicio():
@@ -314,6 +315,17 @@ def registro_de_score(puntos):
     lapiz.goto(-100, 0)
     lapiz.write("puntos totales ={}".format(puntos),
                 False, "left", ("Courier", 18, "bold"))
+
+    diana=turtle.Turtle()
+    diana.shape('sprites/CursorDiana.gif')
+    diana.goto(-190,220)
+    diana.showturtle()
+    diana.penup()
+    diana.speed(0)
+    deplazamientoX = 43
+    desplazamientoy = -49
+    diana.goto(-190 +deplazamientoX, 220 +desplazamientoy)
+
     while True:
         wn.update()
         wn.tracer(0)
@@ -334,6 +346,7 @@ wn.addshape('sprites/cajaRoja.gif')
 wn.addshape('sprites/exit.gif')
 wn.addshape('sprites/personaje.gif')
 wn.addshape('sprites/personajeEsforzado.gif')
+wn.addshape('sprites/CursorDiana.gif')
 ponPersonaje = PonPersonaje()
 miScore = Score()
 tiempoUltimoMovimiento = 0
