@@ -40,32 +40,38 @@ def pantalla_inicio():
     wn.bgpic('sprites/presentacion.gif')
     lapiz.speed(99)
     lapiz.color('#00ff00')
-    lapiz.goto(-100,50)
-    lapiz.write("TOP 5 PLAYERS",
-                False, "left", ("Courier", 18, "bold"))
-    lapiz.goto(-170, 0)
-    lapiz.write("SCORE" +"\t" +"NAME" + "\t" + "     LEVEL",
-                False, "left", ("Courier", 18, "bold"))
-    lapiz.color('#00f300')
-    lapiz.goto(-170, -330)
+    lapiz.goto(-170,-340) # -170 -340
     lapiz.write('< press spacebar to start >',
                 False, "left", ("Courier", 14, "bold"))
+    imprime_top_5(50) # pasar por parameto la coordenada Y para la altura a la que comienza a imprimir la tabla.
+    keyboard.wait(' ')
+    wn.update()
+
+def imprime_top_5(Ycor):
+    lapiz.speed(99)
+    lapiz.color('#00ff00')
+    lapiz.goto(-100, Ycor)
+    lapiz.write("TOP 5 PLAYERS",
+                False, "left", ("Courier", 18, "bold"))
+    lapiz.goto(-170, Ycor + -50)
+    lapiz.write("SCORE" + "\t" + "NAME" + "\t" + "     LEVEL",
+                False, "left", ("Courier", 18, "bold"))
+
+    lapiz.color('#00f300')
+
     lapiz.color("white")
-    x= -170
-    y= -50
-    for i in range (1,6):
-        lapiz.goto( x-70, (y * i) )
-        lapiz.write(i , False, "left", ("Courier", 18, "bold"))
-        lapiz.goto(x+70,(y * i))
-        lapiz.write(str(int(miScore.puesto(i)[0])),False, "right", ("Courier", 18, "bold"))
-        lapiz.goto(x + 100, (y * i))
+    x = -170
+    y = -50
+    for i in range(1, 6):
+        lapiz.goto(x - 70, ((y * i)+ Ycor-50))
+        lapiz.write(i, False, "left", ("Courier", 18, "bold"))
+        lapiz.goto(x + 70, ((y * i)+ Ycor-50))
+        lapiz.write(str(int(miScore.puesto(i)[0])), False, "right", ("Courier", 18, "bold"))
+        lapiz.goto(x + 100, ((y * i)+ Ycor-50))
         lapiz.write(miScore.puesto(i)[1], False, "left", ("Courier", 18, "bold"))
-        lapiz.goto(x + 350, (y * i))
+        lapiz.goto(x + 350, ((y * i)+ Ycor-50))
         lapiz.write(miScore.puesto(i)[2], False, "right", ("Courier", 18, "bold"))
     lapiz.speed(0)
-    wn.update()
-    wn.tracer(0)
-    keyboard.wait(' ')
     wn.update()
 
 def cargar_pantalla(level):
@@ -274,12 +280,10 @@ def salirDePartida(totalMovimientos, nivel):
     #Comprobar si entra en el TOP 5 del high score
     if puntos > int(miScore.puesto(5)[0]):
         print("entra en la tabla de records con puntos =", puntos)
-        registro_de_score(puntos)
+        registro_de_score(puntos, (nivel-1))
     else:
-        print("no entra en la table con puntos = ", puntos)
-    print("nivel = ", nivel)
-    print("total movimientos=",totalMovimientos)
-    print("puntos= ", puntos)
+        #no entra en el top 5
+        pass
     wn.update()
     wn.tracer(0)
     pantalla_inicio()
@@ -297,22 +301,28 @@ def teclas_para_pantalla_juego(): #activa las teclas para que respondan en el mo
 
 def teclas_para_pantalla_highscore(): #activa las teclas para que respondan en el modo highscore.
     wn.listen()
-    wn.onkey(lambda: MuevePersonajeA(0, -1), "Up")
-    wn.onkey(lambda: MuevePersonajeA(0, 1), "Down")
-    wn.onkey(lambda: MuevePersonajeA(1, 0), "Right")
-    wn.onkey(lambda: MuevePersonajeA(-1, 0), "Left")
+    wn.onkey(lambda : mueve_diana('arriba'), "Up")
+    wn.onkey(lambda : mueve_diana('abajo'), "Down")
+    wn.onkey(lambda : mueve_diana('derecha'), "Right")
+    wn.onkey(lambda : mueve_diana('izquierda'), "Left")
     wn.onkey(None, "r")
     wn.onkey(None, "R")
     wn.onkey(None, "S")
     wn.onkey(None, "s")
 
 
-
-def registro_de_score(puntos):
+def registro_de_score(puntos, nivel):
+    global diana
+    nuevaEntrada =(str(puntos).zfill(4) + ',' + '__________' + ',' + str(nivel) + ',' + '\n')
+    miScore.lista.append(nuevaEntrada)
+    miScore.lista.sort(reverse=True)
+    print(" lista despues de nueva entrada:")
+    print(miScore.lista)
     wn.bgcolor('black')
     wn.bgpic('nopic')
     wn.reset()
     lapiz.hideturtle()
+    ponPersonaje.hideturtle()
     lapiz.penup()
     lapiz.speed(99)
     lapiz.color('#00ff00')
@@ -333,12 +343,11 @@ def registro_de_score(puntos):
     lapiz.goto(x +350, y - 190)
     lapiz.write("_",
                 False, "left", ("Courier", 28, "bold"))
-    lapiz.goto(x + 380, y -190 )
+    lapiz.goto(x + 377, y -188 )
     lapiz.write("   Del   End",
                 False, "left", ("Courier", 8, "bold"))
-    lapiz.goto(-100, 0)
-    lapiz.write("puntos totales ={}".format(puntos),
-                False, "left", ("Courier", 18, "bold"))
+
+    #lapiz.write("puntos totales ={}".format(puntos), False, "left", ("Courier", 18, "bold"))
 
     diana=turtle.Turtle()
     diana.shape('sprites/CursorDiana.gif')
@@ -346,17 +355,26 @@ def registro_de_score(puntos):
     diana.showturtle()
     diana.penup()
     diana.speed(0)
-    deplazamientoX = 43
-    desplazamientoy = -49
-    diana.goto(-190 +deplazamientoX, 220 +desplazamientoy)
+    imprime_top_5(25)  # pasar coordenada Y para la altura en la que comienza a imrimir la tabla de scores.
     teclas_para_pantalla_highscore()
     while True:
         wn.update()
         wn.tracer(0)
         pass
 
-def diana_derecha(): # Mueve la diana de seleccionar letras en la pantalla highscore.
-    diana.goto(diana.xcor() +50,diana.ycor())
+def mueve_diana(movimiento): # Mueve la diana de seleccionar letras en la pantalla highscore.
+    global diana
+    print("dentro de mover diana, movimiento = ",movimiento)
+    x = 0; y = 0
+    if movimiento =="arriba":
+        x = 0; y = 50
+    if movimiento =="abajo":
+        x = 0; y = -50
+    if movimiento =="derecha":
+        x = 44; y = 0
+    if movimiento =="izquierda":
+        x = -44; y = 0
+    diana.goto(diana.xcor()+x,diana.ycor()+y)
 
 
 # -------------------------------------------------- C O O D I G O --------------------------------------------------------------
