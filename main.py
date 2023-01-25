@@ -284,6 +284,30 @@ def salirDePartida(totalMovimientos, nivel):
     wn.tracer(0)
     pantalla_inicio()
 
+def teclas_para_pantalla_juego(): #activa las teclas para que respondan en el modo juego.
+    wn.listen()
+    wn.onkey(lambda: MuevePersonajeA(0, -1), "Up")
+    wn.onkey(lambda: MuevePersonajeA(0, 1), "Down")
+    wn.onkey(lambda: MuevePersonajeA(1, 0), "Right")
+    wn.onkey(lambda: MuevePersonajeA(-1, 0), "Left")
+    wn.onkey(lambda: cargar_pantalla(niveles[nivelActual]), "r")
+    wn.onkey(lambda: cargar_pantalla(niveles[nivelActual]), "R")
+    wn.onkey(lambda: salirDePartida(movimientosTotalPartida, nivelActual), "S")
+    wn.onkey(lambda: salirDePartida(movimientosTotalPartida, nivelActual), "s")
+
+def teclas_para_pantalla_highscore(): #activa las teclas para que respondan en el modo highscore.
+    wn.listen()
+    wn.onkey(lambda: MuevePersonajeA(0, -1), "Up")
+    wn.onkey(lambda: MuevePersonajeA(0, 1), "Down")
+    wn.onkey(lambda: MuevePersonajeA(1, 0), "Right")
+    wn.onkey(lambda: MuevePersonajeA(-1, 0), "Left")
+    wn.onkey(None, "r")
+    wn.onkey(None, "R")
+    wn.onkey(None, "S")
+    wn.onkey(None, "s")
+
+
+
 def registro_de_score(puntos):
     wn.bgcolor('black')
     wn.bgpic('nopic')
@@ -325,12 +349,14 @@ def registro_de_score(puntos):
     deplazamientoX = 43
     desplazamientoy = -49
     diana.goto(-190 +deplazamientoX, 220 +desplazamientoy)
-
+    teclas_para_pantalla_highscore()
     while True:
         wn.update()
         wn.tracer(0)
         pass
 
+def diana_derecha(): # Mueve la diana de seleccionar letras en la pantalla highscore.
+    diana.goto(diana.xcor() +50,diana.ycor())
 
 
 # -------------------------------------------------- C O O D I G O --------------------------------------------------------------
@@ -375,16 +401,10 @@ cargar_pantalla(niveles[nivelActual])# Muestra la pantalla del nivel (0 el mas b
 
 
 #Eventos de teclado.
-wn.listen()
-wn.onkey(lambda: MuevePersonajeA(0, -1), "Up")
-wn.onkey(lambda: MuevePersonajeA(0, 1), "Down")
-wn.onkey(lambda: MuevePersonajeA(1, 0), "Right")
-wn.onkey(lambda: MuevePersonajeA(-1, 0), "Left")
-wn.onkey(lambda: cargar_pantalla(niveles[nivelActual]),"r")
-wn.onkey(lambda: cargar_pantalla(niveles[nivelActual]),"R")
-wn.onkey(lambda: salirDePartida(movimientosTotalPartida, nivelActual),"S")
-wn.onkey(lambda: salirDePartida(movimientosTotalPartida, nivelActual),"s")
+teclas_para_pantalla_juego()
 wn.tracer(0)
+
+
 
 a=0
 b=0
