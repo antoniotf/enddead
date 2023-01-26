@@ -35,12 +35,20 @@ def configurar_ventana():
 
 def pantalla_inicio():
     global continuar
-    continuar= False
     global movimientosTotalPartida
+    global nivelActual
+    global nivelMaximo
+    continuar = False
+    nivelActual = 1  # nivel de inicio
+    nivelMaximo = 20
     movimientosTotalPartida = 0
     #Pantalla de presentacion de titulo y score list.
+    wn.reset()
     wn.bgpic('sprites/presentacion.gif')
     lapiz.speed(99)
+    lapiz.penup()
+    lapiz.hideturtle()
+    ponPersonaje.hideturtle()
     lapiz.color('#00ff00')
     lapiz.goto(-170,-340) # -170 -340
     lapiz.write('< press spacebar to start >',
@@ -49,6 +57,7 @@ def pantalla_inicio():
     activar_teclas('inicio')
     while continuar == False:
         wn.update()
+    cargar_pantalla(niveles[nivelActual])# Muestra la pantalla del nivel (0 el mas bajo)
 
 
 def espacio_pulsado():
@@ -135,6 +144,7 @@ def cargar_pantalla(level):
     lapiz.color("green")
     lapiz.pensize(5)
     lapiz.goto(350, -260)
+    activar_teclas('juego')
 
 def imprime(x,y,tipo):#
     global lapiz
@@ -285,12 +295,14 @@ def juegoCompletado():
 
 def salirDePartida(totalMovimientos, nivel):
     #Comprobar si la puntuación se mayor que el top 5.
+    print("dentro de la sub salirDePartida")
     global contadorMovimientos
     puntos = 2000 - (totalMovimientos) -((20-nivel+1)*100)
     #Comprobar si entra en el TOP 5 del high score
     if puntos > int(miScore.puesto(5)[0]):
         print("entra en la tabla de records con puntos =", puntos)
         registro_de_score(puntos, (nivel-1))
+        #registrar_score.entrada(puntos,(nivel-1))
     else:
         #no entra en el top 5
         pass
@@ -378,6 +390,7 @@ def registro_de_score(puntos, nivel):
         wn.tracer(0)
         pass
 
+
 def mueve_diana(movimiento): # Mueve la diana de seleccionar letras en la pantalla highscore.
     global diana
     print("dentro de mover diana, movimiento = ",movimiento)
@@ -409,12 +422,12 @@ wn.addshape('sprites/personajeEsforzado.gif')
 wn.addshape('sprites/CursorDiana.gif')
 ponPersonaje = PonPersonaje()
 miScore = Score()
+#registrar_score = Registrar_Score()
 tiempoUltimoMovimiento = 0
 xMasyAnteriores =""
 movimientosTotalPartida = 0
 
-nivelActual = 1#nivel de inicio
-nivelMaximo = 20
+
 
 lapiz = turtle.Turtle()
 lapiz.hideturtle()
@@ -422,18 +435,20 @@ lapiz.penup()
 
 configurar_ventana() # Configura color, y tamaño de ventana.
 
-pantalla_inicio() # pantalla de presentación con titulo y scorelist (espera 'press spacebar' para seguir).
-
 cuentaMovimientos = turtle.Turtle()
 cuentaMovimientos.hideturtle()
 cuentaMovimientos.penup()
 
-cargar_pantalla(niveles[nivelActual])# Muestra la pantalla del nivel (0 el mas bajo)
+pantalla_inicio() # pantalla de presentación con titulo y scorelist (espera 'press spacebar' para seguir).
+
+
+
+
 
 
 
 #Eventos de teclado.
-activar_teclas('juego')
+
 wn.tracer(0)
 
 
