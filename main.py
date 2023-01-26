@@ -5,7 +5,7 @@ import time
 import random
 from playsound import playsound
 from TablaNiveles import *
-from ScoreList import *
+from ClasesPropias import *
 
 class PonPersonaje(turtle.Turtle):
     def __init__(self):
@@ -34,6 +34,8 @@ def configurar_ventana():
     #ponPersonaje = PonPersonaje()
 
 def pantalla_inicio():
+    global continuar
+    continuar= False
     global movimientosTotalPartida
     movimientosTotalPartida = 0
     #Pantalla de presentacion de titulo y score list.
@@ -44,8 +46,16 @@ def pantalla_inicio():
     lapiz.write('< press spacebar to start >',
                 False, "left", ("Courier", 14, "bold"))
     imprime_top_5(50) # pasar por parameto la coordenada Y para la altura a la que comienza a imprimir la tabla.
-    keyboard.wait(' ')
-    wn.update()
+    activar_teclas('inicio')
+    while continuar == False:
+        wn.update()
+
+
+def espacio_pulsado():
+    global continuar
+    continuar = True
+
+
 
 def imprime_top_5(Ycor):
     lapiz.speed(99)
@@ -288,28 +298,34 @@ def salirDePartida(totalMovimientos, nivel):
     wn.tracer(0)
     pantalla_inicio()
 
-def teclas_para_pantalla_juego(): #activa las teclas para que respondan en el modo juego.
+def activar_teclas(pantalla):
     wn.listen()
-    wn.onkey(lambda: MuevePersonajeA(0, -1), "Up")
-    wn.onkey(lambda: MuevePersonajeA(0, 1), "Down")
-    wn.onkey(lambda: MuevePersonajeA(1, 0), "Right")
-    wn.onkey(lambda: MuevePersonajeA(-1, 0), "Left")
-    wn.onkey(lambda: cargar_pantalla(niveles[nivelActual]), "r")
-    wn.onkey(lambda: cargar_pantalla(niveles[nivelActual]), "R")
-    wn.onkey(lambda: salirDePartida(movimientosTotalPartida, nivelActual), "S")
-    wn.onkey(lambda: salirDePartida(movimientosTotalPartida, nivelActual), "s")
-
-def teclas_para_pantalla_highscore(): #activa las teclas para que respondan en el modo highscore.
-    wn.listen()
-    wn.onkey(lambda : mueve_diana('arriba'), "Up")
-    wn.onkey(lambda : mueve_diana('abajo'), "Down")
-    wn.onkey(lambda : mueve_diana('derecha'), "Right")
-    wn.onkey(lambda : mueve_diana('izquierda'), "Left")
     wn.onkey(None, "r")
     wn.onkey(None, "R")
     wn.onkey(None, "S")
     wn.onkey(None, "s")
-
+    wn.onkey(None, "Up")
+    wn.onkey(None, "Down")
+    wn.onkey(None, "Right")
+    wn.onkey(None, "Left")
+    wn.onkey(None, " ")
+    wn.onkey(None, "q")
+    if pantalla =='juego':
+        wn.onkey(lambda: MuevePersonajeA(0, -1), "Up")
+        wn.onkey(lambda: MuevePersonajeA(0, 1), "Down")
+        wn.onkey(lambda: MuevePersonajeA(1, 0), "Right")
+        wn.onkey(lambda: MuevePersonajeA(-1, 0), "Left")
+        wn.onkey(lambda: cargar_pantalla(niveles[nivelActual]), "r")
+        wn.onkey(lambda: cargar_pantalla(niveles[nivelActual]), "R")
+        wn.onkey(lambda: salirDePartida(movimientosTotalPartida, nivelActual), "S")
+        wn.onkey(lambda: salirDePartida(movimientosTotalPartida, nivelActual), "s")
+    if pantalla =='highscore':
+        wn.onkey(lambda: mueve_diana('arriba'), "Up")
+        wn.onkey(lambda: mueve_diana('abajo'), "Down")
+        wn.onkey(lambda: mueve_diana('derecha'), "Right")
+        wn.onkey(lambda: mueve_diana('izquierda'), "Left")
+    if pantalla =='inicio':
+        wn.onkey(espacio_pulsado, "space")
 
 def registro_de_score(puntos, nivel):
     global diana
@@ -356,7 +372,7 @@ def registro_de_score(puntos, nivel):
     diana.penup()
     diana.speed(0)
     imprime_top_5(25)  # pasar coordenada Y para la altura en la que comienza a imrimir la tabla de scores.
-    teclas_para_pantalla_highscore()
+    activar_teclas('highscore')
     while True:
         wn.update()
         wn.tracer(0)
@@ -404,8 +420,6 @@ lapiz = turtle.Turtle()
 lapiz.hideturtle()
 lapiz.penup()
 
-
-
 configurar_ventana() # Configura color, y tamaño de ventana.
 
 pantalla_inicio() # pantalla de presentación con titulo y scorelist (espera 'press spacebar' para seguir).
@@ -419,7 +433,7 @@ cargar_pantalla(niveles[nivelActual])# Muestra la pantalla del nivel (0 el mas b
 
 
 #Eventos de teclado.
-teclas_para_pantalla_juego()
+activar_teclas('juego')
 wn.tracer(0)
 
 

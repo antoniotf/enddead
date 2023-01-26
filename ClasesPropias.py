@@ -1,19 +1,15 @@
+import string
+# Creación de lista con todos los scores ordenados de mejor a peor.
 # se parte de 2.000 puntos y se restan todos los movimientos realizados por nivel, ni no se completa el juego se aplican 100 movimientos por nivel no jugado.
-
 class Score:
-    prueba="ok"
     def __init__(self):
         fichero = open('score.txt', 'r')
         readthefile = fichero.readlines()
         self.lista = sorted(readthefile, reverse=True)
         print("lista ordenada:")
         print(self.lista)
-
-    def puesto(self,puesto):
+    def puesto(self,puesto): #devuelve los datos del puesto indicado -- Nombre Puntos y Level
         return (self.lista[puesto].split(','))
-
-
-
 
 '''
 
@@ -30,6 +26,24 @@ for nombre in nombres:
     fichero.writelines(str(punto)+','+nombre+','+str(nivel)+','+'\n')
 fichero.close()
 '''
+#Gestión de los eventos de teclado. Activa, desactiva y redirecciona la captura de teclas según la pantalla actual.
+
+
+
+
+
+
+
+# TODO
+'''
+Para la clase registar_score
+self.letras = list(string.ascii_uppercase)
+self.letras.insert(14, 'Ñ')
+self.letras.append('_')
+self.letras.append('del')
+self.letras.append('end')
+'''
+
 
 
 
