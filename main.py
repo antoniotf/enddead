@@ -1,9 +1,13 @@
+import sys
+
 import keyboard
 import turtle
 import copy
 import time
 import random
 from playsound import playsound
+
+import ClasesPropias
 from TablaNiveles import *
 from ClasesPropias import *
 
@@ -302,7 +306,7 @@ def salirDePartida(totalMovimientos, nivel):
     if puntos > int(miScore.puesto(5)[0]):
         print("entra en la tabla de records con puntos =", puntos)
         registro_de_score(puntos, (nivel-1))
-        #registrar_score.entrada(puntos,(nivel-1))
+
     else:
         #no entra en el top 5
         pass
@@ -322,6 +326,7 @@ def activar_teclas(pantalla):
     wn.onkey(None, "Left")
     wn.onkey(None, " ")
     wn.onkey(None, "q")
+    wn.onkey(None, "space")
     if pantalla =='juego':
         wn.onkey(lambda: MuevePersonajeA(0, -1), "Up")
         wn.onkey(lambda: MuevePersonajeA(0, 1), "Down")
@@ -336,6 +341,7 @@ def activar_teclas(pantalla):
         wn.onkey(lambda: mueve_diana('abajo'), "Down")
         wn.onkey(lambda: mueve_diana('derecha'), "Right")
         wn.onkey(lambda: mueve_diana('izquierda'), "Left")
+        wn.onkey(lambda: mueve_diana('espacio_pulsado'), "space")
     if pantalla =='inicio':
         wn.onkey(espacio_pulsado, "space")
 
@@ -403,7 +409,23 @@ def mueve_diana(movimiento): # Mueve la diana de seleccionar letras en la pantal
         x = 44; y = 0
     if movimiento =="izquierda":
         x = -44; y = 0
+
+    if (diana.ycor() +y) < 120:
+        y=100
+    if (diana.ycor() +y) > 220:
+        y = -100
+    if ((diana.xcor() + x ) > 206) and ((diana.ycor() + y ) > 120):
+        x= -396
+    else:
+        if ((diana.xcor() + x) > 250):
+            x = -440
+    if ((diana.xcor() + x ) < -190):
+        x= 396
     diana.goto(diana.xcor()+x,diana.ycor()+y)
+    if movimiento =="espacio_pulsado":
+        print(" se a seleccionado --> ",(((diana.xcor()+190)/44) + (diana.ycor()-220)/-5))
+
+    #return (((diana.xcor()+190)/44) + (diana.ycor()-220)/-5)
 
 
 # -------------------------------------------------- C O O D I G O --------------------------------------------------------------
@@ -422,10 +444,7 @@ wn.addshape('sprites/personajeEsforzado.gif')
 wn.addshape('sprites/CursorDiana.gif')
 ponPersonaje = PonPersonaje()
 miScore = Score()
-
-print("miScore = ",miScore)
-print("miScore.lista = ",miScore.lista)
-#registrar_score = Registrar_Score()
+tabla_letras = Registrar_Score() # crea un objeto con la lista de todas las letras y simbolos para entrar el score.
 tiempoUltimoMovimiento = 0
 xMasyAnteriores =""
 movimientosTotalPartida = 0
@@ -441,6 +460,8 @@ configurar_ventana() # Configura color, y tamaño de ventana.
 cuentaMovimientos = turtle.Turtle()
 cuentaMovimientos.hideturtle()
 cuentaMovimientos.penup()
+
+
 
 pantalla_inicio() # pantalla de presentación con titulo y scorelist (espera 'press spacebar' para seguir).
 
