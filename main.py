@@ -422,6 +422,9 @@ wn.addshape('sprites/personajeEsforzado.gif')
 wn.addshape('sprites/CursorDiana.gif')
 ponPersonaje = PonPersonaje()
 miScore = Score()
+
+print("miScore = ",miScore)
+print("miScore.lista = ",miScore.lista)
 #registrar_score = Registrar_Score()
 tiempoUltimoMovimiento = 0
 xMasyAnteriores =""

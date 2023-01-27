@@ -31,7 +31,6 @@ fichero.close()
 
 class Registrar_Score:
     def __init__(self):
-        global miScore
         self.letras = list(string.ascii_uppercase)
         self.letras.insert(14, 'Ñ')
         self.letras.append('_')
@@ -40,6 +39,8 @@ class Registrar_Score:
         pass
     def entrada(self,puntos,nivel):
         global diana
+        miScore = Score()
+        print("miScore instanciado en clasespropias = ",miScore)
         nuevaEntrada = (str(puntos).zfill(4) + ',' + '__________' + ',' + str(nivel) + ',' + '\n')
         miScore.lista.append(nuevaEntrada)
         miScore.lista.sort(reverse=True)
