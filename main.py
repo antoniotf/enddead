@@ -5,6 +5,7 @@ import turtle
 import copy
 import time
 import random
+import string
 from playsound import playsound
 
 import ClasesPropias
@@ -48,6 +49,7 @@ def pantalla_inicio():
     movimientosTotalPartida = 0
     #Pantalla de presentacion de titulo y score list.
     wn.reset()
+    diana.hideturtle()
     wn.bgpic('sprites/presentacion.gif')
     lapiz.speed(99)
     lapiz.penup()
@@ -105,6 +107,7 @@ def cargar_pantalla(level):
     wn.bgcolor('black')
     wn.bgpic('nopic')
     wn.reset()
+    diana.hideturtle()
     lapiz.hideturtle()
     lapiz.penup()
     cuentaMovimientos.hideturtle()
@@ -149,6 +152,8 @@ def cargar_pantalla(level):
     lapiz.pensize(5)
     lapiz.goto(350, -260)
     activar_teclas('juego')
+
+
 
 def imprime(x,y,tipo):#
     global lapiz
@@ -299,12 +304,10 @@ def juegoCompletado():
 
 def salirDePartida(totalMovimientos, nivel):
     #Comprobar si la puntuación se mayor que el top 5.
-    print("dentro de la sub salirDePartida")
     global contadorMovimientos
     puntos = 2000 - (totalMovimientos) -((20-nivel+1)*100)
     #Comprobar si entra en el TOP 5 del high score
     if puntos > int(miScore.puesto(5)[0]):
-        print("entra en la tabla de records con puntos =", puntos)
         registro_de_score(puntos, (nivel-1))
 
     else:
@@ -346,16 +349,21 @@ def activar_teclas(pantalla):
         wn.onkey(espacio_pulsado, "space")
 
 def registro_de_score(puntos, nivel):
-    global diana
+    # global diana depurando
     global nuevo_Nombre
     global cursor
     global puesto
+    global nuevaEntrada
+    global dentro_de_registro_score
+    dentro_de_registro_score = True
+
     nuevaEntrada =(str(puntos).zfill(4) + ',' + '__________' + ',' + str(nivel) + ',' + '\n')
     miScore.lista.append(nuevaEntrada)
     miScore.lista.sort(reverse=True)
     wn.bgcolor('black')
     wn.bgpic('nopic')
     wn.reset()
+    diana.hideturtle()
     lapiz.hideturtle()
     ponPersonaje.hideturtle()
     lapiz.penup()
@@ -384,7 +392,7 @@ def registro_de_score(puntos, nivel):
 
     #lapiz.write("puntos totales ={}".format(puntos), False, "left", ("Courier", 18, "bold"))
 
-    diana=turtle.Turtle()
+    # diana=turtle.Turtle() depurando
     diana.shape('sprites/CursorDiana.gif')
     diana.goto(-190,220)
     diana.showturtle()
@@ -393,31 +401,32 @@ def registro_de_score(puntos, nivel):
     imprime_top_5(25)  # pasar coordenada Y para la altura en la que comienza a imrimir la tabla de scores.
     activar_teclas('highscore')
     j=0
+    print("miScore.lista =",miScore.lista)
     for i in miScore.lista: #calcula la coordenada y en la lista de records y la asigna a la variable puesto
+        print ("valor para i =" ,i)
         if (i.split(',')[1])=='__________':
             puesto = ((j-1) * 50 + 75) * -1
-            print("valor de puesto ?=", puesto)
         j =j + 1
     lapiz.color('green')
     lapiz.goto(-70,puesto) # altura para primero = 75
     nuevo_Nombre =['_','_','_','_','_','_','_','_','_','_']
     cadena_nuevoNombre ="".join(nuevo_Nombre)
-    print("cadena nuevo nombre =", cadena_nuevoNombre)
     lapiz.write(cadena_nuevoNombre,
                 False, "left", ("Courier", 18, "bold"))
     cursor = 0 # posición seleccionada en la cadena del nombre en highscore
-    while True:
+    while dentro_de_registro_score == True:
         cursor = nuevo_Nombre.index('_')
         wn.update()
         wn.tracer(0)
-        pass
+    pantalla_inicio()
 
 
 def mueve_diana(movimiento): # Mueve la diana de seleccionar letras en la pantalla highscore.
-    global diana
+    #global diana depurando
     global nuevo_Nombre
     global cursor
-    print("dentro de mover diana, movimiento = ",movimiento)
+    global nuevaEntrada
+    global dentro_de_registro_score
     x = 0; y = 0
     if movimiento =="arriba":
         x = 0; y = 50
@@ -443,27 +452,35 @@ def mueve_diana(movimiento): # Mueve la diana de seleccionar letras en la pantal
     if movimiento =="espacio_pulsado":
         indice_diana = int(((diana.xcor()+190)/44) + (diana.ycor()-220)/-5)
         if indice_diana == 27:
-            nuevo_Nombre[cursor] = '8'
-            print(" nuevo nombre despues de espacio =",nuevo_Nombre)
+            nuevo_Nombre[cursor] = ' '
 
         if indice_diana == 28: # se a seleccionado 'del' (borrar ùltima letra)
-            print("pulsado Del, cursor vale =",cursor)
             nuevo_Nombre[cursor-1] = '_'
             lapiz.color('black')
             lapiz.goto(-70, puesto)  # altura para primero = 75
             lapiz.write("██████████",
                         False, "left", ("Courier", 18, "bold"))
-
-
-            print("nuevo nombre =", nuevo_Nombre)
-        else:
-            print("indice diana =",indice_diana)
+        if indice_diana < 27:
             nuevo_Nombre[cursor] = tabla_letras.letras[indice_diana]
         cadena_nuevoNombre = "".join(nuevo_Nombre)
         lapiz.color('green')
         lapiz.goto(-70, puesto)  # altura para primero = 75
         lapiz.write(cadena_nuevoNombre,
                     False, "left", ("Courier", 18, "bold"))
+        if indice_diana == 29: # grabar nombre
+            cadena_nuevoNombre = "".join(nuevo_Nombre)
+            nombre =cadena_nuevoNombre.replace('_',"")
+            entrada = nuevaEntrada.replace("__________",nombre)
+            fichero = open('score.txt', 'a')
+            print("entrada grabada =",str(entrada) +"|")
+            fichero.writelines(str(entrada))
+            fichero.close()
+            diana.hideturtle()
+            wn.update()
+            miScore.cargar_ranking()
+            dentro_de_registro_score = False
+
+
 
     #return (((diana.xcor()+190)/44) + (diana.ycor()-220)/-5)
 
@@ -484,13 +501,13 @@ wn.addshape('sprites/personajeEsforzado.gif')
 wn.addshape('sprites/CursorDiana.gif')
 ponPersonaje = PonPersonaje()
 miScore = Score()
+miScore.cargar_ranking()
 tabla_letras = Registrar_Score() # crea un objeto con la lista de todas las letras y simbolos para entrar el score.
-print("Tabla letras =",tabla_letras.letras)
 tiempoUltimoMovimiento = 0
 xMasyAnteriores =""
 movimientosTotalPartida = 0
 
-
+diana = turtle.Turtle() # depurando
 
 lapiz = turtle.Turtle()
 lapiz.hideturtle()

@@ -3,11 +3,14 @@ import string
 # se parte de 2.000 puntos y se restan todos los movimientos realizados por nivel, ni no se completa el juego se aplican 100 movimientos por nivel no jugado.
 class Score:
     def __init__(self):
+        pass
+    def puesto(self,puesto): #devuelve los datos del puesto indicado -- Nombre Puntos y Level
+        return (self.lista[puesto].split(','))
+    def cargar_ranking(self):
         fichero = open('score.txt', 'r')
         readthefile = fichero.readlines()
         self.lista = sorted(readthefile, reverse=True)
-    def puesto(self,puesto): #devuelve los datos del puesto indicado -- Nombre Puntos y Level
-        return (self.lista[puesto].split(','))
+
 
 '''
 
