@@ -63,7 +63,8 @@ def pantalla_inicio():
     activar_teclas('inicio')
     while continuar == False:
         wn.update()
-    cargar_pantalla(niveles[nivelActual])# Muestra la pantalla del nivel (0 el mas bajo)
+    #cargar_pantalla(niveles[nivelActual])# Muestra la pantalla del nivel (0 el mas bajo)
+    cargar_pantalla(niveles[nivelActual])  # Muestra la pantalla del nivel (0 el mas bajo)
 
 
 def espacio_pulsado():
@@ -151,7 +152,16 @@ def cargar_pantalla(level):
     lapiz.color("green")
     lapiz.pensize(5)
     lapiz.goto(350, -260)
+    wn.update()
+    wn.tracer(0)
     activar_teclas('juego')
+    wn.update()
+    wn.tracer(0)
+
+
+
+
+
 
 
 
