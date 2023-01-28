@@ -347,11 +347,12 @@ def activar_teclas(pantalla):
 
 def registro_de_score(puntos, nivel):
     global diana
+    global nuevo_Nombre
+    global cursor
+    global puesto
     nuevaEntrada =(str(puntos).zfill(4) + ',' + '__________' + ',' + str(nivel) + ',' + '\n')
     miScore.lista.append(nuevaEntrada)
     miScore.lista.sort(reverse=True)
-    print(" lista despues de nueva entrada:")
-    print(miScore.lista)
     wn.bgcolor('black')
     wn.bgpic('nopic')
     wn.reset()
@@ -372,12 +373,12 @@ def registro_de_score(puntos, nivel):
     lapiz.write("K L M N Ñ O P Q R S",
                 False, "left", ("Courier", 28, "bold"))
     lapiz.goto(x, y -200)
-    lapiz.write("T U V W X Y Z .",
+    lapiz.write("T U V W X Y Z",
                 False, "left", ("Courier", 28, "bold"))
-    lapiz.goto(x +350, y - 190)
+    lapiz.goto(x +310, y - 190)
     lapiz.write("_",
                 False, "left", ("Courier", 28, "bold"))
-    lapiz.goto(x + 377, y -188 )
+    lapiz.goto(x + 335, y -188 )
     lapiz.write("   Del   End",
                 False, "left", ("Courier", 8, "bold"))
 
@@ -391,7 +392,22 @@ def registro_de_score(puntos, nivel):
     diana.speed(0)
     imprime_top_5(25)  # pasar coordenada Y para la altura en la que comienza a imrimir la tabla de scores.
     activar_teclas('highscore')
+    j=0
+    for i in miScore.lista: #calcula la coordenada y en la lista de records y la asigna a la variable puesto
+        if (i.split(',')[1])=='__________':
+            puesto = ((j-1) * 50 + 75) * -1
+            print("valor de puesto ?=", puesto)
+        j =j + 1
+    lapiz.color('green')
+    lapiz.goto(-70,puesto) # altura para primero = 75
+    nuevo_Nombre =['_','_','_','_','_','_','_','_','_','_']
+    cadena_nuevoNombre ="".join(nuevo_Nombre)
+    print("cadena nuevo nombre =", cadena_nuevoNombre)
+    lapiz.write(cadena_nuevoNombre,
+                False, "left", ("Courier", 18, "bold"))
+    cursor = 0 # posición seleccionada en la cadena del nombre en highscore
     while True:
+        cursor = nuevo_Nombre.index('_')
         wn.update()
         wn.tracer(0)
         pass
@@ -399,6 +415,8 @@ def registro_de_score(puntos, nivel):
 
 def mueve_diana(movimiento): # Mueve la diana de seleccionar letras en la pantalla highscore.
     global diana
+    global nuevo_Nombre
+    global cursor
     print("dentro de mover diana, movimiento = ",movimiento)
     x = 0; y = 0
     if movimiento =="arriba":
@@ -417,13 +435,35 @@ def mueve_diana(movimiento): # Mueve la diana de seleccionar letras en la pantal
     if ((diana.xcor() + x ) > 206) and ((diana.ycor() + y ) > 120):
         x= -396
     else:
-        if ((diana.xcor() + x) > 250):
-            x = -440
+        if ((diana.xcor() + x) > 206):
+            x = -396
     if ((diana.xcor() + x ) < -190):
         x= 396
     diana.goto(diana.xcor()+x,diana.ycor()+y)
     if movimiento =="espacio_pulsado":
-        print(" se a seleccionado --> ",(((diana.xcor()+190)/44) + (diana.ycor()-220)/-5))
+        indice_diana = int(((diana.xcor()+190)/44) + (diana.ycor()-220)/-5)
+        if indice_diana == 27:
+            nuevo_Nombre[cursor] = '8'
+            print(" nuevo nombre despues de espacio =",nuevo_Nombre)
+
+        if indice_diana == 28: # se a seleccionado 'del' (borrar ùltima letra)
+            print("pulsado Del, cursor vale =",cursor)
+            nuevo_Nombre[cursor-1] = '_'
+            lapiz.color('black')
+            lapiz.goto(-70, puesto)  # altura para primero = 75
+            lapiz.write("██████████",
+                        False, "left", ("Courier", 18, "bold"))
+
+
+            print("nuevo nombre =", nuevo_Nombre)
+        else:
+            print("indice diana =",indice_diana)
+            nuevo_Nombre[cursor] = tabla_letras.letras[indice_diana]
+        cadena_nuevoNombre = "".join(nuevo_Nombre)
+        lapiz.color('green')
+        lapiz.goto(-70, puesto)  # altura para primero = 75
+        lapiz.write(cadena_nuevoNombre,
+                    False, "left", ("Courier", 18, "bold"))
 
     #return (((diana.xcor()+190)/44) + (diana.ycor()-220)/-5)
 
@@ -445,6 +485,7 @@ wn.addshape('sprites/CursorDiana.gif')
 ponPersonaje = PonPersonaje()
 miScore = Score()
 tabla_letras = Registrar_Score() # crea un objeto con la lista de todas las letras y simbolos para entrar el score.
+print("Tabla letras =",tabla_letras.letras)
 tiempoUltimoMovimiento = 0
 xMasyAnteriores =""
 movimientosTotalPartida = 0

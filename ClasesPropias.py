@@ -6,8 +6,6 @@ class Score:
         fichero = open('score.txt', 'r')
         readthefile = fichero.readlines()
         self.lista = sorted(readthefile, reverse=True)
-        print("lista ordenada:")
-        print(self.lista)
     def puesto(self,puesto): #devuelve los datos del puesto indicado -- Nombre Puntos y Level
         return (self.lista[puesto].split(','))
 
