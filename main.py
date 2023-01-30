@@ -6,6 +6,7 @@ import copy
 import time
 import random
 import string
+from itertools import product
 from playsound import playsound
 
 import ClasesPropias
@@ -27,9 +28,8 @@ def configurar_ventana():
     wn = turtle.Screen()
     wn.bgcolor('black')
     wn.title('Dead End')
-    anchoPantalla = 940  # medida de la ventana se requiere numero par
-    altoPantalla = 700  # medida de la ventana se requiere numero par
-    wn.setup(anchoPantalla, altoPantalla)
+
+    wn.setup(ANCHO_PANTALLA, ALTO_PANTALLA)
     wn.addshape('sprites/ladrillo.gif')
     wn.addshape('sprites/caja.gif')
     wn.addshape('sprites/exit.gif')
@@ -42,10 +42,9 @@ def pantalla_inicio():
     global continuar
     global movimientosTotalPartida
     global nivelActual
-    global nivelMaximo
+    global NIVEL_FINAL
     continuar = False
     nivelActual = 1  # nivel de inicio
-    nivelMaximo = 20
     movimientosTotalPartida = 0
     #Pantalla de presentacion de titulo y score list.
     wn.reset()
@@ -159,12 +158,6 @@ def cargar_pantalla(level):
     wn.tracer(0)
 
 
-
-
-
-
-
-
 def imprime(x,y,tipo):#
     global lapiz
     global idStamps
@@ -273,12 +266,12 @@ def rotulo_nivel_completado(x):
     lapiz.color('#3c79b8')
     nivelActual = nivelActual + 1
 
-    if nivelActual <= nivelMaximo:
+    if nivelActual <= NIVEL_FINAL:
         lapiz.write("NIVEL COMPLETADO\n\nMOVIMIENTOS {}\nPRÓXIMO NIVEL {}\n\n\n'press spacebar'".format(x, nivelActual),False,"left",("Courier", 18, "bold"))
         wn.update()
         keyboard.wait(' ')
 
-    if nivelActual > nivelMaximo:
+    if nivelActual > NIVEL_FINAL:
         lapiz.write("JUEGO FINALIZADO\n\nMOVIMIENTOS {}\nPRÓXIMO NIVEL, DIOS!\n\n\n'press spacebar'".format(x),
                     False, "left", ("Courier", 18, "bold"))
         wn.update()
@@ -490,14 +483,29 @@ def mueve_diana(movimiento): # Mueve la diana de seleccionar letras en la pantal
 
     #return (((diana.xcor()+190)/44) + (diana.ycor()-220)/-5)
 
+def permutaciones(la_lista, pasos):
+    caracteres_los = list(la_lista)
+    las_permutaciones =[]
+    i=0
+
+    for c in product(caracteres_los, repeat= pasos):
+        las_permutaciones.append(c)
+        i=i+1
+    print("i=",i)
+    return las_permutaciones
+
+
+
+
+
+
 
 # -------------------------------------------------- C O O D I G O --------------------------------------------------------------
 wn = turtle.Screen()
 wn.bgcolor('black')
 wn.title('Dead End')
-anchoPantalla = 940  # medida de la ventana se requiere numero par
-altoPantalla = 700  # medida de la ventana se requiere numero par
-wn.setup(anchoPantalla, altoPantalla)
+
+wn.setup(ANCHO_PANTALLA, ALTO_PANTALLA)
 wn.addshape('sprites/ladrillo.gif')
 wn.addshape('sprites/caja.gif')
 wn.addshape('sprites/cajaRoja.gif')
@@ -527,6 +535,9 @@ cuentaMovimientos.penup()
 
 
 
+lista_permutaciones = (permutaciones('134',5))
+print(len(lista_permutaciones))
+
 pantalla_inicio() # pantalla de presentación con titulo y scorelist (espera 'press spacebar' para seguir).
 
 
@@ -539,12 +550,41 @@ pantalla_inicio() # pantalla de presentación con titulo y scorelist (espera 'pr
 
 wn.tracer(0)
 
-
-
+#lista_permutaciones[2] =[3,3,3,3,1,1,3,3,1,1,1,4,1,4,4,4,1]
+lista_permutaciones[2] =[4,4,4,1,1,1,4,1,1]
+print (lista_permutaciones)
 a=0
 b=0
+lista_mejorada= []
 while True:
-    """ale = random.randint(1,4)
+
+    print("dentro del true")
+    for lineacapturada in lista_permutaciones:
+        for elemento in lineacapturada:
+            elemento =int(elemento)
+            #time.sleep(0.1)
+            if elemento == 1:
+                MuevePersonajeA(0, -1)
+            if elemento == 2:
+                MuevePersonajeA(0, 1)
+            if elemento == 3:
+                MuevePersonajeA(1, 0)
+            if elemento == 4:
+                MuevePersonajeA(-1, 0)
+            a = a + 1
+            wn.update()
+        if int(((290 - ponPersonaje.ycor()) / 50)) < 6:
+            lista_mejorada.append(lineacapturada)
+            print("lista mejorada = ", lista_mejorada)
+            print("partidas = ", b)
+        cargar_pantalla(niveles[1])
+        a= 0
+        b=b +1
+
+
+    '''
+    #ale = random.randint(1,4)
+    ale = lineacapturada[0]
     if ale == 1:
         MuevePersonajeA(0, -1)
     if ale == 2:
@@ -559,7 +599,8 @@ while True:
         a=0
         b=b+1
         print("candidad de partidas = ", b)
-        cargar_pantalla(niveles[1])"""
-
+        cargar_pantalla(niveles[1]) 
+    '''
+    break
     wn.update()
 

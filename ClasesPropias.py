@@ -1,4 +1,10 @@
 import string
+
+# CONSTANTES :
+ANCHO_PANTALLA = 940  # medida de la ventana se requiere numero par.
+ALTO_PANTALLA = 700  # medida de la ventana se requiere numero par.
+NIVEL_FINAL = 20 # Indica cual es el último nivel del juego.
+
 # Creación de lista con todos los scores ordenados de mejor a peor.
 # se parte de 2.000 puntos y se restan todos los movimientos realizados por nivel, ni no se completa el juego se aplican 100 movimientos por nivel no jugado.
 class Score:

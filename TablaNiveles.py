@@ -1,6 +1,7 @@
 
 
-#medida nivelse obligatorio 16 columnas x 8 filas.
+#medida nivels: obligatorio 16 columnas x 8 filas. X=muros / E=meta
+#P=Personaje / @=Cajas amarillas / R=Cajas rojas
 niveles =[]
 
 level_0 = [
