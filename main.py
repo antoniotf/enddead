@@ -319,13 +319,12 @@ def salirDePartida(totalMovimientos, nivel):
     #Comprobar si entra en el TOP 5 del high score
     if puntos > int(miScore.puesto(5)[0]):
         registro_de_score(puntos, (nivel-1))
-
     else:
         #no entra en el top 5
         pantalla_inicio()
     wn.update()
     wn.tracer(0)
-    print("llamando a pantalla_inicio() desde salir de partida")
+
 
 
 def activar_teclas(pantalla):
@@ -428,7 +427,6 @@ def registro_de_score(puntos, nivel):
         wn.update()
         wn.tracer(0)
     pantalla_inicio()
-
 
 
 def mueve_diana(movimiento): # Mueve la diana de seleccionar letras en la pantalla highscore.
