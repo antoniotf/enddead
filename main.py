@@ -322,10 +322,11 @@ def salirDePartida(totalMovimientos, nivel):
 
     else:
         #no entra en el top 5
-        pass
+        pantalla_inicio()
     wn.update()
     wn.tracer(0)
-    pantalla_inicio()
+    print("llamando a pantalla_inicio() desde salir de partida")
+
 
 def activar_teclas(pantalla):
     wn.listen()
@@ -411,9 +412,7 @@ def registro_de_score(puntos, nivel):
     imprime_top_5(25)  # pasar coordenada Y para la altura en la que comienza a imrimir la tabla de scores.
     activar_teclas('highscore')
     j=0
-    print("miScore.lista =",miScore.lista)
     for i in miScore.lista: #calcula la coordenada y en la lista de records y la asigna a la variable puesto
-        print ("valor para i =" ,i)
         if (i.split(',')[1])=='__________':
             puesto = ((j-1) * 50 + 75) * -1
         j =j + 1
@@ -429,6 +428,7 @@ def registro_de_score(puntos, nivel):
         wn.update()
         wn.tracer(0)
     pantalla_inicio()
+
 
 
 def mueve_diana(movimiento): # Mueve la diana de seleccionar letras en la pantalla highscore.
@@ -482,14 +482,12 @@ def mueve_diana(movimiento): # Mueve la diana de seleccionar letras en la pantal
             nombre =cadena_nuevoNombre.replace('_',"")
             entrada = nuevaEntrada.replace("__________",nombre)
             fichero = open('score.txt', 'a')
-            print("entrada grabada =",str(entrada) +"|")
             fichero.writelines(str(entrada))
             fichero.close()
             diana.hideturtle()
             wn.update()
             miScore.cargar_ranking()
             dentro_de_registro_score = False
-
 
 
     #return (((diana.xcor()+190)/44) + (diana.ycor()-220)/-5)
