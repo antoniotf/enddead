@@ -318,6 +318,14 @@ def salirDePartida(totalMovimientos, nivel):
     wn.update()
     wn.tracer(0)
 
+def cheat_levelUp():
+    global nivelActual
+    nivelActual = nivelActual + 1
+
+def cheat_levelDown():
+    global nivelActual
+    nivelActual = nivelActual + 1
+
 
 
 def activar_teclas(pantalla):
@@ -350,6 +358,8 @@ def activar_teclas(pantalla):
         wn.onkey(lambda: mueve_diana('espacio_pulsado'), "space")
     if pantalla =='inicio':
         wn.onkey(espacio_pulsado, "space")
+        wn.onkey(cheat_levelUp, "+")
+        wn.onkey(cheat_levelDown, "-")
 
 def registro_de_score(puntos, nivel):
     # global diana depurando
@@ -483,22 +493,6 @@ def mueve_diana(movimiento): # Mueve la diana de seleccionar letras en la pantal
 
     #return (((diana.xcor()+190)/44) + (diana.ycor()-220)/-5)
 
-def permutaciones(la_lista, pasos):
-    caracteres_los = list(la_lista)
-    las_permutaciones =[]
-    i=0
-
-    for c in product(caracteres_los, repeat= pasos):
-        las_permutaciones.append(c)
-        i=i+1
-    print("i=",i)
-    return las_permutaciones
-
-
-
-
-
-
 
 # -------------------------------------------------- C O O D I G O --------------------------------------------------------------
 wn = turtle.Screen()
@@ -534,15 +528,7 @@ cuentaMovimientos.hideturtle()
 cuentaMovimientos.penup()
 
 
-
-lista_permutaciones = (permutaciones('134',5))
-print(len(lista_permutaciones))
-
 pantalla_inicio() # pantalla de presentación con titulo y scorelist (espera 'press spacebar' para seguir).
-
-
-
-
 
 
 
@@ -550,14 +536,12 @@ pantalla_inicio() # pantalla de presentación con titulo y scorelist (espera 'pr
 
 wn.tracer(0)
 
-#lista_permutaciones[2] =[3,3,3,3,1,1,3,3,1,1,1,4,1,4,4,4,1]
-lista_permutaciones[2] =[4,4,4,1,1,1,4,1,1]
-print (lista_permutaciones)
+
 a=0
 b=0
-lista_mejorada= []
-while True:
 
+while True:
+    '''
     print("dentro del true")
     for lineacapturada in lista_permutaciones:
         for elemento in lineacapturada:
@@ -582,7 +566,7 @@ while True:
         b=b +1
 
 
-    '''
+    
     #ale = random.randint(1,4)
     ale = lineacapturada[0]
     if ale == 1:
@@ -600,7 +584,8 @@ while True:
         b=b+1
         print("candidad de partidas = ", b)
         cargar_pantalla(niveles[1]) 
-    '''
+    
     break
+    '''
     wn.update()
 
